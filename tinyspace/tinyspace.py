@@ -142,7 +142,9 @@ def sample_from_space(
 ) -> Union[Dict, Arr]:
     if isinstance(space, TinySpace) or "shape" in space.keys():
         if batch_size:
-            size = (batch_size, *space["shape"])
+            if not (isinstance(batch_size, list) or isinstance(batch_size, tuple)):
+                batch_size = (batch_size,)
+            size = (*batch_size, *space["shape"])
         size = tuple(ndim_pad if _is_nd(d) else d for d in size)
         dtype = space["dtype"]
         if type(dtype).__module__ == "torch" or to_torch_tensor:
