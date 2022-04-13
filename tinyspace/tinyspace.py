@@ -116,13 +116,20 @@ def from_gym_space(gym_space, to_tinyspace=True) -> Space:
         out_space = dict(
             shape=gym_space.shape,
             dtype=gym_space.dtype,
-            low=gym_space.low,
-            high=gym_space.high,
         )
         if isinstance(gym_space, gym.spaces.Box):
             out_space["cls"] = "box"
+            out_space.update(
+                cls="box",
+                low=gym_space.low,
+                high=gym_space.high,
+            )
         elif isinstance(gym_space, gym.spaces.Discrete):
-            out_space["cls"] = "discrete"
+            out_space.update(
+                cls="discrete",
+                low=0,
+                high=gym_space.n,
+            )
         else:
             raise NotImplementedError
 
