@@ -53,7 +53,7 @@ class TinySpace:
 
     Example:
         ```python
-        action_space = TinySpace(shape=(10,), dtype=np.int, low=0, high=10, desc="action space", cls="discrete")
+        action_space = TinySpace(shape=(), dtype=np.int, low=0, high=10, desc="action space", cls="discrete")
         if action_space["cls"] == "discrete":  # access like a dictionary
             ...
         elif action_space.cls == "box":  # or dot access
@@ -107,15 +107,34 @@ def space_from_dict(d: Union[Dict[str, T], Dict[str, Dict]]):
         return {k: space_from_dict(v) for k, v in d.items()}
 
 
-def from_gym_space(gym_space) -> Space:
-    import gym
+def from_gym_space(gym_space, to_tinyspace=True) -> Space:
+    import gym.spaces
 
-    raise NotImplementedError
+    if isinstance(gym_space, gym.spaces.Dict):
+        out_space = {k: from_gym_space(v, to_tinyspace=to_tinyspace) for k, v in gym_space.items()}
+    else:
+        out_space = dict(
+            shape=gym_space.shape,
+            dtype=gym_space.dtype,
+            low=gym_space.low,
+            high=gym_space.high,
+        )
+        if isinstance(gym_space, gym.spaces.Box):
+            out_space["cls"] = "box"
+        elif isinstance(gym_space, gym.spaces.Discrete):
+            out_space["cls"] = "discrete"
+        else:
+            raise NotImplementedError
+
+        if to_tinyspace:
+            out_space = TinySpace(**out_space)
+
+    return out_space
 
 
-def replace_spaces_of_gymenv(env):
-    env.action_space = from_gym_space(env.action_space)
-    env.observation_space = from_gym_space(env.observation_space)
+def convert_gymenv_spaces(env, to_tinyspace=True):
+    env.action_space = from_gym_space(env.action_space, to_tinyspace=to_tinyspace)
+    env.observation_space = from_gym_space(env.observation_space, to_tinyspace=to_tinyspace)
     return env
 
 

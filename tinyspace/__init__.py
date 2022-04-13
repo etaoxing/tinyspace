@@ -1,10 +1,10 @@
-from .tinyspace import (  # noqa: F401
+from .tinyspace import (
     Space,
     TinySpace,
     collate_obs,
+    convert_gymenv_spaces,
     from_gym_space,
     is_ndshape,
-    replace_spaces_of_gymenv,
     sample_from_space,
     space_from_dict,
 )
