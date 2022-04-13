@@ -45,11 +45,7 @@ if __name__ == "__main__":
     version = __version__
 
     try:
-        sha = (
-            subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=cwd)
-            .decode("ascii")
-            .strip()
-        )
+        sha = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=cwd).decode("ascii").strip()
     except subprocess.CalledProcessError:
         pass
 

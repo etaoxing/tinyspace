@@ -172,9 +172,7 @@ def collate_obs(obses: Union[List, Tuple], space: Space, to_torch_tensor: bool =
         to_torch_tensor: If True, then convert to `torch.Tensor`.
     """
     assert len(obses) > 0, "need observations from at least one environment"
-    assert isinstance(
-        obses, (list, tuple)
-    ), "expected list or tuple of observations per environment"
+    assert isinstance(obses, (list, tuple)), "expected list or tuple of observations per environment"
 
     if isinstance(space, TinySpace) or "shape" in space.keys():
         if to_torch_tensor:
