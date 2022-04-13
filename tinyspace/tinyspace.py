@@ -139,6 +139,29 @@ def from_gym_space(gym_space, to_tinyspace=True) -> Space:
     return out_space
 
 
+def to_gym_space(space: Space):
+    import gym.spaces
+
+    if "shape" in space.keys():
+        _cls = space.get("cls", "box")
+        if _cls == "discrete":
+            s = gym.spaces.Discrete(space["high"])
+        elif _cls == "box":
+            s = gym.spaces.Box(
+                low=space["low"],
+                high=space["high"],
+                shape=space["shape"],
+                dtype=space["dtype"],
+            )
+        else:
+            raise NotImplementedError
+        return s
+    else:
+        s = {k: to_gym_space(v) for k, v in space.items()}
+        s = gym.spaces.Dict(s)
+        return s
+
+
 def convert_gymenv_spaces(env, to_tinyspace=True):
     env.action_space = from_gym_space(env.action_space, to_tinyspace=to_tinyspace)
     env.observation_space = from_gym_space(env.observation_space, to_tinyspace=to_tinyspace)

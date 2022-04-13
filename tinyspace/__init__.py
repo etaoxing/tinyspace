@@ -7,4 +7,5 @@ from .tinyspace import (
     is_ndshape,
     sample_from_space,
     space_from_dict,
+    to_gym_space,
 )
