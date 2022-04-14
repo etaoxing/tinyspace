@@ -89,8 +89,8 @@ class TinySpace:
     dtype: Dtype
     low: Union[int, float, Arr]
     high: Union[int, float, Arr]
-    desc: Optional[str] = None
     cls: Optional[str] = None
+    desc: Optional[str] = None
 
     def __getitem__(self, item):  # makes subscriptable
         return getattr(self, item)
