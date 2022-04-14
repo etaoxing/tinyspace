@@ -118,7 +118,6 @@ def from_gym_space(gym_space, to_tinyspace=True) -> Space:
             dtype=gym_space.dtype,
         )
         if isinstance(gym_space, gym.spaces.Box):
-            out_space["cls"] = "box"
             out_space.update(
                 cls="box",
                 low=gym_space.low,
@@ -129,6 +128,12 @@ def from_gym_space(gym_space, to_tinyspace=True) -> Space:
                 cls="discrete",
                 low=0,
                 high=gym_space.n,
+            )
+        elif isinstance(gym_space, gym.spaces.MultiDiscrete):
+            out_space.update(
+                cls="multidiscrete",
+                low=np.zeros_like(gym_space.nvec),
+                high=gym_space.nvec,
             )
         else:
             raise NotImplementedError
@@ -146,6 +151,8 @@ def to_gym_space(space: Space):
         _cls = space.get("cls", "box")
         if _cls == "discrete":
             s = gym.spaces.Discrete(space["high"])
+        elif _cls == "multidiscrete":
+            s = gym.spaces.MultiDiscrete(space["high"])
         elif _cls == "box":
             s = gym.spaces.Box(
                 low=space["low"],
