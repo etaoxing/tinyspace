@@ -118,10 +118,20 @@ def from_gym_space(gym_space, to_tinyspace=True) -> Space:
             dtype=gym_space.dtype,
         )
         if isinstance(gym_space, gym.spaces.Box):
+            low = gym_space.low
+            low_unique = np.unique(low)
+            if len(low_unique) == 1:
+                low = low_unique[0]
+
+            high = gym_space.high
+            high_unique = np.unique(high)
+            if len(high_unique) == 1:
+                high = high_unique[0]
+
             out_space.update(
                 cls="box",
-                low=gym_space.low,
-                high=gym_space.high,
+                low=low,
+                high=high,
             )
         elif isinstance(gym_space, gym.spaces.Discrete):
             out_space.update(
