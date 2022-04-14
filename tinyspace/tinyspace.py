@@ -92,6 +92,12 @@ class TinySpace:
     cls: Optional[str] = None
     desc: Optional[str] = None
 
+    def get(self, key, default=None):
+        value = getattr(self, key, default)
+        if value is None:  # also set to default if space.key exists but is set to None
+            value = default
+        return value
+
     def __getitem__(self, item):  # makes subscriptable
         return getattr(self, item)
 
@@ -157,7 +163,7 @@ def from_gym_space(gym_space, to_tinyspace=True) -> Space:
 def to_gym_space(space: Space):
     import gym.spaces
 
-    if "shape" in space.keys():
+    if isinstance(space, TinySpace) or "shape" in space.keys():
         _cls = space.get("cls", "box")
         if _cls == "discrete":
             s = gym.spaces.Discrete(space["high"])
