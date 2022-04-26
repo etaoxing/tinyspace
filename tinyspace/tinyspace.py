@@ -44,38 +44,12 @@ except ImportError:
 
 @dataclasses.dataclass
 class TinySpace:
-    r"""
-    A simple and lightweight spaces implementation for RL environments, in place of `gym.spaces`.
-    Any `Space` is a `TinySpace` with the following args or a `dict` where each value is a `TinySpace`.
+    r"""A simple and lightweight spaces implementation for RL environments, in place of `gym.spaces`.
+
+    Any `Space` is a :class:`TinySpace` with the following args or a :obj:`dict` where each value is a :class:`TinySpace`.
 
     You can either use this dataclass or just define a `Space` using dicts, since tinyspace
-    prefers subscriptable access. However, because a TinySpace is a dataclass, dot access also works.
-
-    Example:
-        ```python
-        action_space = TinySpace(shape=(), dtype=np.int, low=0, high=10, desc="action space", cls="discrete")
-        if action_space["cls"] == "discrete":  # access like a dictionary
-            ...
-        elif action_space.cls == "box":  # or dot access
-            ...
-
-        observation_space = TinySpace(shape=(3, 224, 224), dtype=torch.uint8, low=0, high=255)  # a valid `Space`
-        _nd_shape = (-1, 3)  # can use `-1` or `None` for variable-length dimensions
-        _pcd_space = TinySpace(shape=_nd_space, dtype=np.float32, low=-np.inf, high=np.inf, desc="partial point cloud")
-        observation_space = dict(  # dict where each value is a `TinySpace` is also a valid `Space`
-            rgb=observation_space,
-            endeffector_pos=TinySpace(shape=(3,), dtype=np.float32, low=-np.inf, high=np.inf),
-            pcd=_pcd_space,
-        )
-
-        def check_obs(obs, space: Space):  # use `Space` type for either `TinySpace` or dict of `TinySpace`
-            if isinstance(space, TinySpace):
-                low = space["low"]  # preferred, so that space can also just be a standard dict
-                high = space.high  # but could also use dot access if you don't need that use case
-                ...
-            else:
-                return {k: check_obs(obs[k], v) for k, v in space.items()}
-        ```
+    prefers subscriptable access. However, because a :class:`TinySpace` is a dataclass, dot access also works.
 
     Args:
         shape: Shape of space. Use `-1` or `None` for variable-length dimensions.
@@ -107,13 +81,22 @@ T = TypeVar("T")
 
 
 def space_from_dict(d: Union[Dict[str, T], Dict[str, Dict]]):
+    r"""
+    Args:
+        d: a `dict` to convert to a :obj:`Space`
+    """
     if "shape" in d.keys():
         return TinySpace(**d)
     else:
         return {k: space_from_dict(v) for k, v in d.items()}
 
 
-def from_gym_space(gym_space, to_tinyspace=True) -> Space:
+def from_gym_space(gym_space, to_tinyspace: bool = True) -> Space:
+    r"""
+    Args:
+        gym_space: A `gym.Space`.
+        to_tinyspace: If True, then converts to :class:`TinySpace` dataclass. If False, then leaves it :obj:`dict`.
+    """
     import gym.spaces
 
     if isinstance(gym_space, gym.spaces.Dict):
@@ -161,6 +144,11 @@ def from_gym_space(gym_space, to_tinyspace=True) -> Space:
 
 
 def to_gym_space(space: Space):
+    r"""Convert from `tinyspace` to `gym.spaces`.
+
+    Args:
+        space: The space to convert.
+    """
     import gym.spaces
 
     if isinstance(space, TinySpace) or "shape" in space.keys():
@@ -185,10 +173,15 @@ def to_gym_space(space: Space):
         return s
 
 
-def convert_gymenv_spaces(env, to_tinyspace=True):
-    env.action_space = from_gym_space(env.action_space, to_tinyspace=to_tinyspace)
-    env.observation_space = from_gym_space(env.observation_space, to_tinyspace=to_tinyspace)
-    return env
+def convert_gymenv_spaces(gym_env, to_tinyspace: bool = True):
+    r"""Convert a `gym.Env` to use `tinyspace` instead of `gym.spaces`.
+
+    Args:
+        gym_env: A `gym.Env`.
+    """
+    gym_env.action_space = from_gym_space(gym_env.action_space, to_tinyspace=to_tinyspace)
+    gym_env.observation_space = from_gym_space(gym_env.observation_space, to_tinyspace=to_tinyspace)
+    return gym_env
 
 
 def _is_nd(d) -> bool:
@@ -196,6 +189,11 @@ def _is_nd(d) -> bool:
 
 
 def is_ndshape(space: Space) -> bool:
+    r"""Checks if space.shape is "nd", meaning atleast one dimension has variable length.
+
+    Args:
+        space: A :obj:`Space` to check.
+    """
     if isinstance(space, TinySpace) or "shape" in space.keys():
         return any([_is_nd(d) for d in space["shape"]])
     else:
@@ -243,7 +241,7 @@ def collate_obs(obses: Union[List, Tuple], space: Space, to_torch_tensor: bool =
     Args:
         obses: Batch of observations which need to be collated.
         space: A `TinySpace` or `dict` where each value is a `TinySpace`.
-        to_torch_tensor: If True, then convert to `torch.Tensor`.
+        to_torch_tensor: If True, then convert to :obj:`torch.Tensor`.
     """
     assert len(obses) > 0, "need observations from at least one environment"
     assert isinstance(obses, (list, tuple)), "expected list or tuple of observations per environment"
