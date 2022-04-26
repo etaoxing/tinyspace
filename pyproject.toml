@@ -3,5 +3,13 @@ line-length = 127
 target-version = ['py37']
 include = '\.pyi?$'
 extend-exclude = '''
-^/third_party/
+/(
+    __pycache__
+  | \.git
+  | \.pytest_cache
+  | \.vscode
+  | docs
+  | build
+  | third_party
+)/
 '''
