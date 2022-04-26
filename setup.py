@@ -14,7 +14,6 @@ install_requires = [
 
 extras_deps = {
     "tests": [
-        "pre-commit>=2.0.1",
         # Reformat
         "black>=19.10b0",
         # Lint code
@@ -74,8 +73,8 @@ if __name__ == "__main__":
 
     version_path = os.path.join(cwd, NAME, "version.py")
     with open(version_path, "w") as f:
-        f.write("__version__ = '{}'\n".format(version))
-        f.write("commit = {}\n".format(repr(sha)))
+        f.write(f'__version__ = "{version}"\n')
+        f.write(f'commit = "{sha}"\n')
 
     setup(
         name=NAME,
