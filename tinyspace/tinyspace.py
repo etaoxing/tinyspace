@@ -10,7 +10,7 @@ try:
     import torch
 
     Arr = Union[Arr, torch.Tensor]
-    Dtype = Union[Arr, torch.dtype]
+    Dtype = Union[Dtype, torch.dtype]
 
     # see https://discuss.pytorch.org/t/converting-a-numpy-dtype-to-torch-dtype/52279
 
