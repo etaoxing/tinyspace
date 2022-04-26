@@ -27,17 +27,14 @@ git push -u origin BRANCH
 conda create -n PACKAGE python=3.7
 conda activate PACKAGE
 pip install -e ".[all]"
-
-# pre-commit hooks
-pre-commit install
 ```
 
-Run linting and tests.
+Run linting, style formatting, and tests.
 ```bash
+flake8 .
 isort .
 black .
-flake8 .
-pytest -rvP --forked --cov=tinyspace tests/
+pytest -v -rP --forked --cov tests/
 ```
 
 Document your code, following a [looser version](https://drake.mit.edu/styleguide/pyguide.html) of Google style docstrings.
@@ -50,6 +47,7 @@ Open a new pull request on GitHub.
 
 ```bash
 cd docs/
+make clean
 make html # or `make livehtml` for autobuild
 ```
 
