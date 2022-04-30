@@ -19,6 +19,5 @@ api/index
 :hidden:
 
 CONTRIBUTING
-CHANGELOG
 license
 ```

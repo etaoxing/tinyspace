@@ -39,9 +39,7 @@ pytest -v -rP --forked --cov tests/
 
 Document your code, following a [looser version](https://drake.mit.edu/styleguide/pyguide.html) of Google style docstrings.
 
-Update the [`CHANGELOG`](./CHANGELOG.md), in the "Unreleased" section.
-
-Open a new pull request on GitHub.
+Open a new pull request on GitHub, and add appropriate labels.
 
 ## Building documentation
 
