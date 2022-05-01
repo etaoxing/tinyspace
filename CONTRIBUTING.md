@@ -70,11 +70,13 @@ git push --tags
 After tagging a release, bump `__version__` in [`setup.py`](setup.py).
 ```bash
 # regenerates `version.py`
-pip install -e .
+RELEASE_BUILD=1 pip install -e .  # set RELEASE_BUILD so not including commit hash
 export TAG=$(python -c 'from tinyspace.version import __version__; print( __version__)')
 git add setup.py tinyspace/version.py
 git commit -m "Bump to ${TAG} [skip ci]" && git push
 ```
+
+Then go to the repo's GitHub releases [page](https://github.com/etaoxing/tinyspace/releases), and publish the drafted release notes.
 
 If you need to fix a failed release, delete the tag and the corresponding release (if published) from GitHub.
 Also, delete the tag from your local clone of the repo with `git tag -l | xargs git tag -d && git fetch -t`.
