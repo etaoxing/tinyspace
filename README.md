@@ -5,8 +5,8 @@
 [version-badge]: https://img.shields.io/pypi/v/tinyspace.svg
 [pyversion-badge]: https://img.shields.io/pypi/pyversions/tinyspace.svg
 
-[tests-badge]: https://github.com/etaoxing/tinyspace/actions/workflows/testing.yml/badge.svg
-[tests-url]: https://github.com/etaoxing/tinyspace/actions/workflows/testing.yml
+[tests-badge]: https://github.com/etaoxing/tinyspace/actions/workflows/tests.yml/badge.svg
+[tests-url]: https://github.com/etaoxing/tinyspace/actions/workflows/tests.yml
 
 [docs-badge]: https://img.shields.io/readthedocs/tinyspace.svg
 [docs-url]: https://tinyspace.readthedocs.io/

@@ -90,7 +90,8 @@ Then go to "Admin" -> "Automation Rules" -> "Add Rule", and enter the following:
 - **Version:** Tag
 - **Action:** Activate version
 
-Additional things to do:
-Go to "Admin" -> "Advanced Settings" -> "Default version", change to "stable".
+and click "Save".
+
+Go to "Admin" -> "Advanced Settings" -> "Default version", change to "stable", and click "Save".
+
 Then go to "Versions" -> "Latest", and check "hidden".
-This changes the default version from "Latest" to "Stable".
