@@ -63,22 +63,24 @@ if __name__ == "__main__":
     with open("README.md") as f:
         long_description = f.read()
     cwd = os.path.dirname(os.path.abspath(__file__))
-    sha = "Unknown"
+    sha = "unknown"
     version = __version__
 
-    try:
-        sha = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=cwd).decode("ascii").strip()
-    except subprocess.CalledProcessError:
-        pass
-
-    if sha != "Unknown" and not os.getenv("RELEASE_BUILD"):
-        version += "+" + sha[:7]
-    print("Building wheel {}-{}".format(NAME, version))
+    if os.getenv("RELEASE_BUILD") or (os.getenv("READTHEDOCS") and os.getenv("READTHEDOCS_VERSION_TYPE") == "tag"):
+        sha = version
+    else:
+        try:
+            sha = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=cwd).decode("ascii").strip()
+        except subprocess.CalledProcessError:
+            pass
+        version += ".dev+" + sha[:7]
 
     version_path = os.path.join(cwd, NAME, "version.py")
     with open(version_path, "w") as f:
         f.write(f'__version__ = "{version}"\n')
         f.write(f'commit = "{sha}"\n')
+
+    print(f"Building package {NAME}-{version}")
 
     setup(
         name=NAME,

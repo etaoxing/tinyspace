@@ -118,9 +118,10 @@ code_url = f"{URL}/blob/{commit}"
 def linkcode_resolve(domain, info):
     # Non-linkable objects from the starter kit in the tutorial.
     if domain == "js" or info["module"] == "connect4":
-        return
+        return None
 
-    assert domain == "py", "expected only Python objects"
+    if domain != "py":
+        return None
 
     mod = importlib.import_module(info["module"])
     if "." in info["fullname"]:
@@ -141,7 +142,7 @@ def linkcode_resolve(domain, info):
     except TypeError:
         # e.g. object is a typing.Union
         return None
-    file = os.path.relpath(file, os.path.abspath(f"../{project}"))
+    file = os.path.relpath(file, os.path.abspath(f"../../{project}"))
     # if not file.startswith(f"src/{project}"):
     #     # e.g. object is a typing.NewType
     #     return None
