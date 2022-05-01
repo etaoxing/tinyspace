@@ -58,7 +58,7 @@ make html # or `make livehtml` for autobuild
 RELEASE_BUILD=1 python setup.py check sdist bdist_wheel
 
 export TAG=$(python -c 'from tinyspace.version import __version__; print(__version__)')
-git add tinyspace/version.py
+git add setup.py tinyspace/version.py
 git commit -m "Release ${TAG}" && git push
 
 # make sure that tests pass, then proceed
@@ -72,7 +72,7 @@ After tagging a release, bump `__version__` in [`setup.py`](setup.py).
 # regenerates `version.py`
 pip install -e .
 export TAG=$(python -c 'from tinyspace.version import __version__; print( __version__)')
-git add tinyspace/version.py
+git add setup.py tinyspace/version.py
 git commit -m "Bump to ${TAG} [skip ci]" && git push
 ```
 
