@@ -1,2 +1,2 @@
-__version__ = "0.1.1"
-commit = "0.1.1"
+__version__ = "0.1.2"
+commit = "0.1.2"
