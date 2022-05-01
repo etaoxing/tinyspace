@@ -142,7 +142,7 @@ def linkcode_resolve(domain, info):
     except TypeError:
         # e.g. object is a typing.Union
         return None
-    file = os.path.relpath(file, os.path.abspath(f"../../{project}"))
+    file = os.path.relpath(file, os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
     # if not file.startswith(f"src/{project}"):
     #     # e.g. object is a typing.NewType
     #     return None
