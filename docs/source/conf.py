@@ -142,12 +142,13 @@ def linkcode_resolve(domain, info):
     except TypeError:
         # e.g. object is a typing.Union
         return None
-    file = os.path.relpath(file, os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
-    # if not file.startswith(f"src/{project}"):
+    relfile = os.path.relpath(file, os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
+    # if not relfile.startswith(f"src/{project}"):
     #     # e.g. object is a typing.NewType
     #     return None
     start, end = lines[1], lines[1] + len(lines[0]) - 1
-    linkcode = f"{code_url}/{file}#L{start}-L{end}"
+    linkcode = f"{code_url}/{relfile}#L{start}-L{end}"
+    print(linkcode)
     return linkcode
 
 # -- Options for HTML output -------------------------------------------------
