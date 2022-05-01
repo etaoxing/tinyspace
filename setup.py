@@ -12,6 +12,10 @@ install_requires = [
     "numpy",
 ]
 
+install_requires += [
+    "torch>=1.9.1",
+]
+
 extras_deps = {
     "tests": [
         # Reformat

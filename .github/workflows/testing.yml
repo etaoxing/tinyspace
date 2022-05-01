@@ -22,9 +22,6 @@ jobs:
         os: [ubuntu-latest]
         python-version: [3.7]
         torch-version: [1.9.1]
-        include:
-          - torch-version: 1.9.1
-            torchvision-version: 0.10.1
 
     steps:
       - uses: actions/checkout@v3
@@ -36,7 +33,7 @@ jobs:
 
       - name: Install PyTorch ${{ matrix.torch-version }}+cpu
         run: |
-          pip install torch==${{ matrix.torch-version}}+cpu torchvision==${{ matrix.torchvision-version}}+cpu -f https://download.pytorch.org/whl/torch_stable.html
+          pip install torch==${{ matrix.torch-version}}+cpu -f https://download.pytorch.org/whl/torch_stable.html
 
       - name: Install main package
         run: |
@@ -55,4 +52,4 @@ jobs:
           black --check .
 
       - name: Docs
-        run: cd docs && make html
+        run: cd docs && make clean && make html
